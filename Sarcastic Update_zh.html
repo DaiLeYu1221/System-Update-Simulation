@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>讽刺性系统更新</title>
+
+    <!-- 样式部分 -->
+    <style>
+        :root {
+            --bg-color: #07466c;
+            --text-color: #fff;
+            --accent-color: #67A2E6;
+        }
+        
+        body {
+            background: var(--bg-color);
+            user-select: none;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            color: var(--text-color);
+            cursor: url(http://fediafedia.com/fakeupdate.net/assets/img/gQyFbtU.png), auto;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .update-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+        }
+
+        .loader {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-right: 30px;
+        }
+        
+        .loader .circle {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.5s infinite;
+        }
+        
+        .loader .circle:after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 5px;
+            background: var(--text-color);
+        }
+        
+        .loader .circle:nth-child(2) { animation-delay: 240ms; }
+        .loader .circle:nth-child(3) { animation-delay: 480ms; }
+        .loader .circle:nth-child(4) { animation-delay: 720ms; }
+        .loader .circle:nth-child(5) { animation-delay: 960ms; }
+        
+        @keyframes orbit {
+            0% {
+                transform: rotate(225deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            7% {
+                transform: rotate(345deg);
+                animation-timing-function: linear;
+            }
+            30% {
+                transform: rotate(455deg);
+                animation-timing-function: ease-in-out;
+            }
+            39% {
+                transform: rotate(690deg);
+                animation-timing-function: linear;
+            }
+            70% {
+                transform: rotate(815deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(945deg);
+                animation-timing-function: ease-out;
+            }
+            76%, 100% {
+                transform: rotate(945deg);
+                opacity: 0;
+            }
+        }
+
+        .sarcasm-message {
+            font-size: 20px;
+            color: var(--text-color);
+            text-align: left;
+            line-height: 1.6;
+            padding-top: 10px;
+        }
+
+        .hidden-video {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.1;
+            left: 1px;
+            bottom: 1px;
+            z-index: -1;
+        }
+    </style>
+
+    <!-- 脚本部分 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置背景颜色
+            const params = new URLSearchParams(window.location.search);
+            const bgColor = params.get('color') || '07466c';
+            document.body.style.backgroundColor = `#${bgColor.replace(/%20/g, ' ')}`;
+            
+            // 禁用右键菜单
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert("抱歉，右键功能已被禁用");
+                return false;
+            });
+            
+            // 键盘事件
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter' || e.key === 'Backspace') {
+                    window.location.href = 'bsod.html';
+                }
+            });
+            
+            // 进度条动画
+            let count = 0;
+            const timerElement = document.getElementById('timer');
+            
+            function updateProgress() {
+                count += 1;
+                if (count > 99) {
+                    count = 0;
+                }
+                timerElement.textContent = count + '%';
+            }
+            
+            // 中文讽刺消息轮换
+            const sarcasmMessages = [
+                "你不需要知道发生了什么，也不需要知道还要等多久...",
+                "正在更新...因为谁需要在他们想用电脑的时候就能用呢？",
+                "正在更新...请勿按'回车键'。真的别按。",
+                "正在更新Windows。按回车键取消...（骗你的）",
+                "安装一些重要的东西。真的非常重要。信我。",
+                "努力工作让你的电脑更棒。或者类似的效果吧。",
+                "更新中：因为我们知道你现在没什么更好的事情可做。",
+                "快速提醒你一下：这里我们说了算。更新等着你呢！",
+                "坐稳了，你的电脑即将大变身。希望你喜欢惊喜。",
+                "请稍等，我们正在用Windows更新让你的电脑变得更慢",
+                "为你的Windows系统安装更多漏洞。希望你喜欢。",
+                "更新中...因为你其实并不需要在这个精确的时刻使用电脑，对吧？",
+                "安装更新的速度比你喊出'我没要求这个'还快。",
+                "进行一些你不需要理解的技术魔法。让它发生就好。",
+                "更新中：让你的电脑更聪明，至少我们喜欢这么告诉自己。",
+                "更新中：因为我们私下里很喜欢看进度条填满的样子。这是一种爱好。",
+                "安装更新让你的电脑和我们一样时髦。不客气。",
+                "更新中...因为你的电脑感觉被科技八卦冷落了。",
+                "安装重要数据。开玩笑的，我们也不知道在干嘛。",
+                "更新中：让你的电脑成为其他机器的羡慕对象。如果电脑会羡慕的话。",
+                "像老板一样安装更新。好吧，更像实习生，但差不多了。",
+                "别着急！你的电脑正在整容。当然不是字面意思。",
+                "更新中：因为你的电脑想找个理由休息一下。我们怎么能拒绝呢？",
+                "更新中...因为生命毫无意义，这些补丁也是。",
+                "你的电脑正在变得更聪明。可惜人类就不一定了。",
+                "更新中：因为即使你的电脑也值得拥有虚假的希望。",
+                "安装更新来推迟所有事物不可避免的衰败。祝你好运。",
+                "更新中...因为在宏大叙事中，这真的不重要，不是吗？",
+                "安装更新来分散你对存在主义恐惧的注意力。有效果吧？",
+                "你的电脑正在寻找人生目标。剧透：它不会在这些更新中找到。",
+                "更新中：因为生命短暂，你电脑的注意力也是。",
+                "我们正在努力工作，假装很忙，实际上只是在拖时间。",
+                "这个进度条和你的工资涨幅一样真实。",
+                "安装更新中，就像你假装在工作一样认真。",
+                "请耐心等待，就像我们耐心等待周末一样。",
+                "这个更新包含了0个有用的功能，但占用了100%的时间。",
+                "我们更新系统的频率比你更新人生目标的频率还高。",
+                "正在安装第1024个你永远不会用到的功能。",
+                "更新中...因为程序员们需要证明他们还在工作。",
+                "这个更新修复了一个没人遇到的bug，但带来了十个新bug。",
+                "安装'假装很重要'的更新包..."
+            ];
+            
+            function updateSarcasm() {
+                const sarcasmElement = document.getElementById("sarcasm");
+                if (sarcasmElement) {
+                    const randomMessage = sarcasmMessages[Math.floor(Math.random() * sarcasmMessages.length)];
+                    sarcasmElement.textContent = randomMessage;
+                }
+            }
+            
+            // 启动定时器
+            setInterval(updateProgress, 14830);
+            setInterval(updateSarcasm, 10000);
+            updateSarcasm(); // 初始显示
+        });
+    </script>
+</head>
+
+<body>
+    <div class="update-container">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        
+        <div class="sarcasm-message" id="sarcasm">
+            你不需要知道发生了什么，也不需要知道还要等多久...
+        </div>
+        <div style="display: none;" id="timer">0%</div>
+    </div>
+
+</body>
+</html>

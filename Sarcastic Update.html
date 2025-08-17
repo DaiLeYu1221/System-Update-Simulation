@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>PRANK: Sarcastic Update</title>
+
+    <!-- 样式部分 -->
+    <style>
+        :root {
+            --bg-color: #07466c;
+            --text-color: #fff;
+            --accent-color: #67A2E6;
+        }
+        
+        body {
+            background: var(--bg-color);
+            user-select: none;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI Light', 'Segoe UI', Arial, sans-serif;
+            color: var(--text-color);
+            cursor: url(http://fediafedia.com/fakeupdate.net/assets/img/gQyFbtU.png), auto;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .update-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+        }
+
+        .loader {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            float: left;
+            margin-right: 30px;
+        }
+        
+        .loader .circle {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.5s infinite;
+        }
+        
+        .loader .circle:after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 5px;
+            background: var(--text-color);
+        }
+        
+        .loader .circle:nth-child(2) { animation-delay: 240ms; }
+        .loader .circle:nth-child(3) { animation-delay: 480ms; }
+        .loader .circle:nth-child(4) { animation-delay: 720ms; }
+        .loader .circle:nth-child(5) { animation-delay: 960ms; }
+        
+        @keyframes orbit {
+            0% {
+                transform: rotate(225deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            7% {
+                transform: rotate(345deg);
+                animation-timing-function: linear;
+            }
+            30% {
+                transform: rotate(455deg);
+                animation-timing-function: ease-in-out;
+            }
+            39% {
+                transform: rotate(690deg);
+                animation-timing-function: linear;
+            }
+            70% {
+                transform: rotate(815deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(945deg);
+                animation-timing-function: ease-out;
+            }
+            76%, 100% {
+                transform: rotate(945deg);
+                opacity: 0;
+            }
+        }
+
+        .sarcasm-message {
+            font-size: 20px;
+            color: var(--text-color);
+            text-align: left;
+            line-height: 1.4;
+            padding-top: 10px;
+        }
+
+        .hidden-video {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.1;
+            left: 1px;
+            bottom: 1px;
+            z-index: -1;
+        }
+    </style>
+
+    <!-- 脚本部分 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置背景颜色
+            const params = new URLSearchParams(window.location.search);
+            const bgColor = params.get('color') || '07466c';
+            document.body.style.backgroundColor = `#${bgColor.replace(/%20/g, ' ')}`;
+            
+            // 禁用右键菜单
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert("Sorry, right-click has been disabled");
+                return false;
+            });
+            
+            // 键盘事件
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter' || e.key === 'Backspace') {
+                    window.location.href = 'bsod.html';
+                }
+            });
+            
+            // 进度条动画
+            let count = 0;
+            const timerElement = document.getElementById('timer');
+            
+            function updateProgress() {
+                count += 1;
+                if (count > 99) {
+                    count = 0;
+                }
+                timerElement.textContent = count + '%';
+            }
+            
+            // 讽刺消息轮换
+            const sarcasmMessages = [
+                "You don't need to know what's happening or how long it's going to take.",
+                "Updating... because who needs to use their computer when they want to, right?",
+                "Updating... Do Not Press 'ENTER'. Please don't.",
+                "Updating Windows. Press ENTER to cancel...",
+                "Installing important stuff. Like, seriously important. Trust us.",
+                "Working hard to make your computer even more amazing. Or something like that.",
+                "Updating: Because we know you had nothing better to do right now.",
+                "Just a quick pitstop to remind you that we're in charge here. Updates await!",
+                "Hold tight, your computer is about to get a makeover. We hope you like surprises.",
+                "Please wait a moment while we make your computer slower with Windows Updates",
+                "Installing more bugs to your Windows OS. Hope that's what you like.",
+                "Updating... because you didn't really need to use your computer at this precise moment, did you?",
+                "Installing updates faster than you can say 'I didn't ask for this.'",
+                "Doing some technical wizardry that you don't need to understand. Just let it happen.",
+                "Updating: Making your computer smarter, or at least that's what we like to tell ourselves.",
+                "Updating: Because we secretly enjoy watching progress bars fill up. It's a hobby.",
+                "Installing updates to keep your computer as hip as we are. You're welcome.",
+                "Updating... because your computer was feeling left out in the tech gossip.",
+                "Installing important data. Just kidding, we have no idea what's going on either.",
+                "Updating: Making your computer the envy of other machines. If computers could be envious.",
+                "Installing updates like a boss. Well, more like an intern, but close enough.",
+                "Hold your horses! Your computer is getting a facelift. Not literally, of course.",
+                "Updating: Because your computer wanted an excuse to take a break. Who are we to refuse?",
+                "Updating... because life is meaningless, and so are these patches.",
+                "Your computer is getting smarter. Pity the same can't be said for humanity.",
+                "Updating: Because even your computer deserves a moment of false hope.",
+                "Installing updates to postpone the inevitable decay of all things. Good luck with that.",
+                "Updating... because in the grand scheme of things, it really doesn't matter, does it?",
+                "Installing updates to distract you from the existential dread. It's working, right?",
+                "Your computer is on a quest for purpose. Spoiler alert: It won't find it in these updates.",
+                "Updating: Because life is short, and so is your computer's attention span."
+            ];
+            
+            function updateSarcasm() {
+                const sarcasmElement = document.getElementById("sarcasm");
+                if (sarcasmElement) {
+                    const randomMessage = sarcasmMessages[Math.floor(Math.random() * sarcasmMessages.length)];
+                    sarcasmElement.textContent = randomMessage;
+                }
+            }
+            
+            // 启动定时器
+            setInterval(updateProgress, 14830);
+            setInterval(updateSarcasm, 10000);
+            updateSarcasm(); // 初始显示
+        });
+    </script>
+</head>
+
+<body>
+    <div class="update-container">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        
+        <div class="sarcasm-message" id="sarcasm">
+            You don't need to know what's happening or how long we're going to take...
+        </div>
+        <div style="display: none;" id="timer">0%</div>
+    </div>
+
+</body>
+</html>
