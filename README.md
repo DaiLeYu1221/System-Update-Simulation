@@ -6,8 +6,6 @@ A project that simulates Windows updates to allow you to relax with peace of min
 
 项目地址：https://github.io/DaiLeYu1221/System-Update-Simulation/index.html
 
-[点击直达](https://github.io/DaiLeYu1221/System-Update-Simulation/index.html)
-
 [蓝屏模拟器项目地址](https://github.com/daileyu1221/Blue-screen-emulator/)
 
 [蓝屏模拟器项目直达](https://daileyu1221.github.io/Blue-screen-emulator/)
