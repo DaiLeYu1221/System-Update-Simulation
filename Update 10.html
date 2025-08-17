@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Update Windows10 Screen</title>
+    
+    <style>
+        :root {
+            --bg-color: #006dae;
+            --text-color: #fff;
+            --accent-color: #67A2E6;
+        }
+        
+        body {
+            background: var(--bg-color); 
+            user-select: none;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI Light', 'Segoe UI', Arial, sans-serif;
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .update-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .loader {
+            position: relative;
+            width: 50px;
+            height: 48px;
+            margin: 0 auto 20px;
+        }
+
+        .loader .circle {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.5s infinite;
+        }
+
+        .loader .circle:after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 5px;
+            background: var(--text-color);
+        }
+
+        .loader .circle:nth-child(2) { animation-delay: 240ms; }
+        .loader .circle:nth-child(3) { animation-delay: 480ms; }
+        .loader .circle:nth-child(4) { animation-delay: 720ms; }
+        .loader .circle:nth-child(5) { animation-delay: 960ms; }
+
+        @keyframes orbit {
+            0% {
+                transform: rotate(225deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            7% {
+                transform: rotate(345deg);
+                animation-timing-function: linear;
+            }
+            30% {
+                transform: rotate(455deg);
+                animation-timing-function: ease-in-out;
+            }
+            39% {
+                transform: rotate(690deg);
+                animation-timing-function: linear;
+            }
+            70% {
+                transform: rotate(815deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(945deg);
+                animation-timing-function: ease-out;
+            }
+            76%, 100% {
+                transform: rotate(945deg);
+                opacity: 0;
+            }
+        }
+
+        .status-message {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-size: 20px;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        .restart-notice {
+            position: fixed;
+            bottom: 10%;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .hidden-video {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.1;
+            left: 1px;
+            bottom: 1px;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="update-container">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        
+        <div class="status-message">
+            <span id="ref" data-translate="_win10workingonupdates">Working on updates</span>
+            <span id="timer">0%</span>
+            <span data-translate="_win7percent">complete.</span>
+        </div>
+        
+        <div class="progress-text" data-translate="_win10donotturnoff">
+            Don't turn off your PC. This will take a while.
+        </div>
+    </div>
+    
+    <div class="restart-notice" data-translate="_win10willrestart">
+        Your PC will restart several times
+    </div>
+
+    <video class="hidden-video" muted loop>
+        <source src="../assets/pixel.mp4" type="video/mp4">
+    </video>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/lang.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set background color from URL parameter
+            const params = new URLSearchParams(window.location.search);
+            const bgColor = params.get('color') || '006dae';
+            document.body.style.backgroundColor = `#${bgColor.replace(/%20/g, ' ')}`;
+            
+            // Disable right click
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter' || e.key === 'Backspace') {
+                    window.location.href = 'bsod.html';
+                }
+            });
+            
+            // Update progress simulation
+            let count = 0;
+            let stage = 1;
+            let stage2 = 3;
+            const refElement = document.getElementById('ref');
+            const timerElement = document.getElementById('timer');
+            
+            const counter = setInterval(() => {
+                count += 1;
+                timerElement.textContent = `${count}%`;
+                
+                if (count > 99) {
+                    stage += 1;
+                    count = 0;
+                }
+                
+                if (stage > 3) {
+                    stage2 = 68;
+                    refElement.textContent = 'Installing Updates';
+                    clearInterval(counter);
+                }
+            }, 14830);
+        });
+    </script>
+</body>
+</html>
