@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统更新模拟</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .left-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            animation: fadeInLeft 1s ease;
+        }
+        
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeInRight 1s ease;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+        
+        .description {
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 80%;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background-color: #3367d6;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2d9249;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #d33426;
+        }
+        
+        .os-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .os-option {
+            position: relative;
+        }
+        
+        .os-btn {
+            padding: 15px 25px;
+            background-color: white;
+            color: var(--dark-color);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            width: 180px;
+            text-align: center;
+        }
+        
+        .os-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .os-btn i {
+            margin-right: 8px;
+        }
+        
+        .windows-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+        
+        .os-option.active .windows-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .windows-version {
+            padding: 12px 20px;
+            margin: 0;
+            color: var(--dark-color);
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        
+        .windows-version:hover {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 20px;
+            }
+            
+            .os-options {
+                justify-content: center;
+            }
+        }
+        
+        /* 波纹效果 */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        
+        .ripple:active:after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h1>系统更新模拟<br>可以让您放心摸鱼的网站</h1>
+            <p class="description">一个模拟系统更新的网页，让您在工作时看起来像是在进行系统更新，实际上可以安心做自己的事情。</p>
+            
+            <div class="btn-group">
+                <a href="https://github.com/DaiLeYu1221" class="btn btn-accent ripple">作者主页</a>
+                <a href="https://github.com/DaiLeYu1221/System-Update-Simulation" class="btn ripple">项目主页</a>
+                <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/index_en.html" class="btn btn-secondary ripple">切换英文版</a>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="os-options">
+                <div class="os-option">
+                    <button class="os-btn ripple windows-btn">
+                        <i class="fab fa-windows"></i> Windows
+                    </button>
+                    <div class="windows-dropdown">
+                        <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/Update%20Windows%2098.html" class="windows-version">Windows 98(只有英文版)</a>
+                        <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/Update%20Windows%2010_zh.html" class="windows-version">Windows 10</a>
+                        <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/Update%20Windows%208+_zh.html" class="windows-version">Windows 8+</a>
+                    </div>
+                </div>
+                
+                <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/Update%20Mac%20OS_zh.html" class="os-btn ripple">
+                    <i class="fab fa-apple"></i> Mac OS
+                </a>
+                
+                <a href="https://github.io/DaiLeYu1221/System-Update-Simulation/Sarcastic%20Update_zh.html" class="os-btn ripple">
+                    <i class="fas fa-grin-squint-tears"></i> Sarcastic
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Windows下拉菜单切换
+        const windowsBtn = document.querySelector('.windows-btn');
+        const osOption = document.querySelector('.os-option');
+        
+        windowsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            osOption.classList.toggle('active');
+        });
+        
+        // 点击页面其他位置关闭下拉菜单
+        document.addEventListener('click', function() {
+            osOption.classList.remove('active');
+        });
+        
+        // 阻止下拉菜单内部的点击事件冒泡
+        const dropdown = document.querySelector('.windows-dropdown');
+        dropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // 为所有按钮添加波纹效果
+        const buttons = document.querySelectorAll('.btn, .os-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 创建波纹元素
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+                
+                // 设置波纹位置
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                // 应用样式
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                // 添加并移除波纹
+                this.appendChild(ripple);
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

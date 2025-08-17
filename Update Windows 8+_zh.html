@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Windows 8+ 更新</title>
+
+    <!-- 样式部分 -->
+    <style>
+        :root {
+            --bg-color: #07466c;
+            --text-color: #fff;
+            --accent-color: #67A2E6;
+        }
+        
+        body {
+            background: var(--bg-color);
+            user-select: none;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            color: var(--text-color);
+            cursor: url(http://fediafedia.com/fakeupdate.net/assets/img/gQyFbtU.png), auto;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .update-container {
+            width: 400px;
+            text-align: center;
+        }
+
+        .loader {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 20px;
+        }
+        
+        .loader .circle {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            opacity: 0;
+            transform: rotate(225deg);
+            animation: orbit 5.5s infinite;
+        }
+        
+        .loader .circle:after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 5px;
+            background: var(--text-color);
+        }
+        
+        .loader .circle:nth-child(2) { animation-delay: 240ms; }
+        .loader .circle:nth-child(3) { animation-delay: 480ms; }
+        .loader .circle:nth-child(4) { animation-delay: 720ms; }
+        .loader .circle:nth-child(5) { animation-delay: 960ms; }
+        
+        @keyframes orbit {
+            0% {
+                transform: rotate(225deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            7% {
+                transform: rotate(345deg);
+                animation-timing-function: linear;
+            }
+            30% {
+                transform: rotate(455deg);
+                animation-timing-function: ease-in-out;
+            }
+            39% {
+                transform: rotate(690deg);
+                animation-timing-function: linear;
+            }
+            70% {
+                transform: rotate(815deg);
+                opacity: 1;
+                animation-timing-function: ease-out;
+            }
+            75% {
+                transform: rotate(945deg);
+                animation-timing-function: ease-out;
+            }
+            76%, 100% {
+                transform: rotate(945deg);
+                opacity: 0;
+            }
+        }
+
+        .update-status {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .hidden-video {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0.1;
+            left: 1px;
+            bottom: 1px;
+            z-index: -1;
+        }
+    </style>
+
+    <!-- 脚本部分 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/lang.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置背景颜色
+            const params = new URLSearchParams(window.location.search);
+            const bgColor = params.get('color') || '07466c';
+            document.body.style.backgroundColor = `#${bgColor.replace(/%20/g, ' ')}`;
+            
+            // 禁用右键菜单
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert("抱歉，右键功能已被禁用");
+                return false;
+            });
+            
+            // 键盘事件
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter' || e.key === 'Backspace') {
+                    window.location.href = 'bsod.html';
+                }
+            });
+            
+            // 进度条动画
+            let count = 0;
+            let stage = 1;
+            let stage2 = 3;
+            const refElement = document.getElementById('ref');
+            const timerElement = document.getElementById('timer');
+            const stageElement = document.getElementById('stage');
+            const stage2Element = document.getElementById('stage2');
+            
+            function updateProgress() {
+                count += 1;
+                timerElement.textContent = count + '%';
+                
+                if (count > 99) {
+                    stage += 1;
+                    stageElement.textContent = stage;
+                    count = 0;
+                }
+                
+                if (stage > 3) {
+                    stage2 = 68;
+                    refElement.textContent = "正在安装更新";
+                    stage2Element.textContent = stage2;
+                }
+            }
+            
+            // 启动定时器
+            setInterval(updateProgress, 14830);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="update-container">
+        <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        
+        <div class="update-status">
+            <span id="ref">正在配置 Windows 更新</span><br>
+            <span id="timer">0%</span> 已完成<br>
+            <span>请不要关闭计算机</span>
+        </div>
+    </div>
+
+    <video class="hidden-video" muted loop>
+        <source src="../assets/pixel.mp4" type="video/mp4">
+    </video>
+</body>
+</html>
