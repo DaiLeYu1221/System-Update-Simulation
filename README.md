@@ -4,7 +4,7 @@
 
 ## A project that simulates system updates to allow you to relax with peace of mind.
 
-[中文项目地址](https://github.io/DaiLeYu1221/System-Update-Simulation/index.html)
+[中文项目地址](https://github.io/DaiLeYu1221/System-Update-Simulation)
 
 [English version](https://daileyu1221.github.io/System-Update-Simulation/index_en.html)
 
