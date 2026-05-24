@@ -1,17 +1,17 @@
 # System-Update-Simulation
 
-## 一个可以模拟Windows更新来让你安心摸鱼的项目(bushi)
+## 一个可以模拟系统更新来让你安心摸鱼的项目(bushi)
 
-## A project that simulates Windows updates to allow you to relax with peace of mind.
+## A project that simulates system updates to allow you to relax with peace of mind.
 
-项目地址：https://github.io/DaiLeYu1221/System-Update-Simulation/index.html
+[中文项目地址](https://github.io/DaiLeYu1221/System-Update-Simulation/index.html)
 
-English version：https://github.io/DaiLeYu1221/System-Update-Simulation/index_en.html
+[English version](https://daileyu1221.github.io/System-Update-Simulation/index_en.html)
 
 > [!IMPORTANT]
-> 因为某些原因，英文版暂不支持直接跳转，请大家先进入中文版网站（index.html）再把index.html改为index_en.html，谢谢合作！
+> 进入网站选择后记得全屏！
 > 
-> Due to certain reasons, the English version does not currently support direct access. Please first enter the Chinese version of the website (index.html) and then change index.html to index_en.html. Thank you for your cooperation!
+> Remember to go full screen after entering the website and making your selection!
 
 ## 一些快捷方式
 
